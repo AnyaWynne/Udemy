@@ -17,4 +17,10 @@ export class ShoppingListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  saveEmittedData(shoppingData: Ingredient){
+    this.ingredients.push(shoppingData);
+  }
+  
+
+
 }
