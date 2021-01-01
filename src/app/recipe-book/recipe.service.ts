@@ -21,6 +21,10 @@ getRecipes(){
     return this.recipes.slice();
 }
 
+getRecipe(index: number){
+    return this.recipes[index];
+}
+
 addIngredientsToShoppingList(ingredients: Ingredient[]){
     this.shoppingService.addIngredients(ingredients);
     // console.log(ingredients[0].name);
