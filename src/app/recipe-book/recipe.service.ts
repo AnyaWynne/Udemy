@@ -1,12 +1,16 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingService } from '../shopping-list/shoppingList.service';
 import { Recipe } from './recipe.model';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class RecipeService {
-    recipeSelected = new EventEmitter<Recipe>();
-    ingredientSelected = new EventEmitter<Ingredient>();
+
+    recipeChanged = new Subject<Recipe[]>();
+
+    // recipeSelected = new Subject<Recipe>(); now we are routing the links
+    ingredientSelected = new Subject<Ingredient>();
     private recipes: Recipe[] = [
         new Recipe('A Cake Recipe 1', 'Enjoy the baking 1', 'https://livforcake.com/wp-content/uploads/2017/07/black-forest-cake-4.jpg', 
         [new Ingredient('flour', 1), new Ingredient('sugar', 1), new Ingredient('eggs', 1)] ),
@@ -28,6 +32,21 @@ getRecipe(index: number){
 addIngredientsToShoppingList(ingredients: Ingredient[]){
     this.shoppingService.addIngredients(ingredients);
     // console.log(ingredients[0].name);
+}
+
+addRecipe(recipe: Recipe){
+    this.recipes.push(recipe);
+    this.recipeChanged.next(this.recipes.slice());
+}
+
+updateRecipe(index: number, newRecipe: Recipe){
+    this.recipes[index] = newRecipe;
+    this.recipeChanged.next(this.recipes.slice());
+}
+
+deleteRecipe(index: number){
+    this.recipes.splice(index, 1);
+    this.recipeChanged.next(this.recipes.slice());
 }
 
 }
